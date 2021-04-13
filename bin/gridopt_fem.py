@@ -3,6 +3,7 @@
 import os
 import json
 import argparse
+import json
 import logging
 
 import numpy as np
@@ -74,6 +75,7 @@ def main():
     loc_dim = args.locdim
     rot_dim = args.rotdim
     output_file = args.output_file
+
     if args.options:
         with open(args.options, 'r') as f:
             opts = json.load(f)

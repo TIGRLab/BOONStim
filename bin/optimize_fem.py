@@ -49,6 +49,7 @@ import json
 import logging
 from collections import deque
 from docopt import docopt
+import json
 
 import numpy as np
 from fieldopt.objective import FieldFunc
@@ -110,7 +111,7 @@ def main():
     tol = float(args['--convergence']) or 0.001
     history = args['--history']
     skip_convergence = args['--skip-convergence']
-
+   
     if args['--options']:
         with open(args['--options'], 'r') as f:
             opts = json.load(f)
