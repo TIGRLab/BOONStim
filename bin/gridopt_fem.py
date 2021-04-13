@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import json
 import argparse
 import logging
 
@@ -56,6 +57,10 @@ def main():
                         help="Number of simulations to run simultaneously, "
                         "will default to half the number of cpus if not "
                         "specified.")
+    parser.add_argument('--options',
+                        type=str,
+                        help="ADVANCED: Add custom arguments to FEM "
+                        "function")
 
     args = parser.parse_args()
     msh = args.msh
@@ -69,15 +74,21 @@ def main():
     loc_dim = args.locdim
     rot_dim = args.rotdim
     output_file = args.output_file
+    if args.options:
+        with open(args.options, 'r') as f:
+            opts = json.load(f)
+    else:
+        opts = {}
 
     # Construct objective function object
     logging.info(f"Using {ncpus} cpus")
     femfunc = FieldFunc(mesh_file=msh,
-                  initial_centroid=centroid,
-                  tet_weights=wf,
-                  coil=coil,
-                  field_dir=workdir,
-                  cpus=ncpus)
+                        initial_centroid=centroid,
+                        tet_weights=wf,
+                        coil=coil,
+                        field_dir=workdir,
+                        cpus=ncpus,
+                        **opts)
 
     # Set up grid for evaluation
     x_in = np.linspace(femfunc.bounds[0, 0], femfunc.bounds[0, 1], loc_dim)

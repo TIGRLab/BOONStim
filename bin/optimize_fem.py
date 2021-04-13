@@ -38,11 +38,14 @@ Options:
     -s,--skip-convergence                   Do not use convergence criterion,
                                             instead use n-iters only
                                             [Default: disabled]
+    -o, --options                           ADVANCED: Apply custom FEM function
+                                            options
 '''
 
 # Base package loading
 
 import os
+import json
 import logging
 from collections import deque
 from docopt import docopt
@@ -108,6 +111,12 @@ def main():
     history = args['--history']
     skip_convergence = args['--skip-convergence']
 
+    if args['--options']:
+        with open(args['--options'], 'r') as f:
+            opts = json.load(f)
+    else:
+        opts = {}
+
     logging.info('Using {} cpus'.format(cpus))
 
     f = FieldFunc(mesh_file=mesh,
@@ -115,7 +124,8 @@ def main():
                   tet_weights=weights,
                   coil=coil,
                   field_dir=tmpdir,
-                  cpus=cpus)
+                  cpus=cpus,
+                  **opts)
 
     # Make search domain
     search_domain = TensorProductDomain([
