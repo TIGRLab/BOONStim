@@ -35,13 +35,13 @@ Workflow Arguments:
 
 Module Arguments:
 
-- `--fmriprep`: The path to a fmriprep singularity container, version >= 20.2.0.
+- `--fmriprep`: The path to an fmriprep singularity container, version >= 20.2.0.
 - `--fmriprep_descriptor`: The path to an fmriprep boutiques descriptor file with fmriprep custom argument mappings.
 - `--fmriprep_invocation`: The path to an fmriprep boutiques invocation file with arguments to invoke fmriprep step with in the pipeline.
 - `--fmriprep_anat_invocation`: The path to an fmriprep boutiques invocation file with arguments to invoke fmriprep (anatomical) step with in the pipeline.
-- `--ciftify`: The path to a fmriprep singularity container, version >= 1.3.0.
-- `--ciftify_descriptor`: The path to an ciftify boutiques descriptor file with ciftify custom argument mappings.
-- `--ciftify_invocation`: The path to an ciftify boutiques invocation file with arguments to invoke ciftify step with in the pipeline.
+- `--ciftify`: The path to a ciftify singularity container, version >= 1.3.0.
+- `--ciftify_descriptor`: The path to a ciftify boutiques descriptor file with ciftify custom argument mappings.
+- `--ciftify_invocation`: The path to a ciftify boutiques invocation file with arguments to invoke ciftify step with in the pipeline.
 
 
 ## Cache
@@ -89,8 +89,6 @@ You'll see that each of these directories correspond to a `cacheDir(<ARG>)` refe
 
 This means if BOONStim crashes, it will not repeat jobs like mri2mesh, fMRIPrep, Ciftify, optimization. 
 
-
-
 ## Outputs
 
 Outputs of BOONStim are specified using the `--out` flag.
@@ -129,3 +127,55 @@ Importantly:
     - `_optimized_coil.geo` is a GMSH script to generate a figure of where the optimal placement of the targeting coil is
     - `(left|right)_knob_scalefactor.txt` - contains the Stokes correction factor using a canonical left/right hand-knob coordinate
     - `_T1fs_conform.nii.gz` - contains a NIFTI file in the same space as the FEM used for running simulations
+
+## Quality Control Outputs
+
+All QC outputs are automatically generated as part of BOONStim.
+
+1. fMRIPrep
+2. Ciftify
+3. mri2mesh
+4. Cortical Distance Measurements
+5. Optimization Result
+
+#### fMRIprep
+
+**LOCATION**: `$out/fmriprep/${subject}.html`
+
+Info on fmriprep QC available on [fmriprep's documentation](https://fmriprep.org/en/stable/outputs.html#visual-reports) and [TIGRLab documentation](http://imaging-genetics.camh.ca/documentation/#/resources/Pipeline-QC-guide?id=fmriprep-functional).
+
+
+#### Ciftify
+
+**LOCATION**: `${out}/ciftify/qc_*`
+
+Info on ciftify QC available on [ciftify's documentation](https://edickie.github.io/ciftify/#/) and [TIGRLab documentation](http://imaging-genetics.camh.ca/documentation/#/resources/Pipeline-QC-guide?id=ciftify).
+
+#### mri2mesh
+
+**LOCATION**: `${out}/boonstim/${subject}/`
+
+This can be done similarily to standard Freesurfer QC. Results can be found in `${subject}/fs_${subject}` and `${subject}/m2m_${subject}` directories. 
+
+You can load in the `fs_<subject>/surf/{white,pial}.{lh.rh}` files alongside the `<subject>_T1fs_conform.nii.gz` file to view the surface quality of the mri2mesh Freesurfer run.
+
+#### Cortical Distance Measurements
+
+**LOCATION**: `${out}/boonstim/${subject}/results/${id_string}.html`
+
+Where `${id_string}` is a unique identifier for a given ROI`(i.e ${subject}_${hemisphere}_${roi})`
+
+#### Optimization Results
+
+**LOCATION**: `${out}/boonstim/${subject}/results/${subject}_optimized_*`
+
+Optimization results can be found in `outputs/boonstim/<SUBJECT>/results` as the `<SUBJECT>_optimized_{coil,geo}*` files. You can load both in as follows:
+
+
+```
+gmsh *optimized*
+```
+
+
+## Credit
+This pipeline was conceptualized and developed by Jerrold Jeyachandra ([@jerdra](https://github.com/jerdra)). 
