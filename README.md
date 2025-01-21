@@ -17,6 +17,31 @@ BOONStim is run on the **Nextflow** framework. Nextflow is a framework that is d
 
 This allows BOONStim to be extensible and scalable, which is helpeful for running on HCP systems. This means to run BOONStim, you must have nextflow installed and configured to your system to access the nf entry scripts. You can find out about how to install Nextflow for your system [here](https://www.nextflow.io/). Note: To initiate DSL2 version of Nextflow set the following environment variable: NXF_VER=19.09.0-edge or anything newer.
 
+## Quickstart
+
+Once you have nextflow set up on your system, you're just about good to go for running BOONStim. Then you just need to edit the config files for your purposes (MRI acquisition parameters, preprocessing parameters, target regions) and run the following to get BOONStim started:
+
+```
+nextflow run boonstim.nf \
+  -c config/boonstim.nf.config \
+  -c resources/weightfunc/weightfunc.nf.config \
+  --bids <bids_path> \
+  --out <output_path> \
+  --cache_dir <cache_path> \
+  --method bayesian \
+  --subjects <subjects_file> \
+  --fmriprep_invocation resources/invocations/fmriprep-20.2.0_invocation.json \
+  --anat_invocation resources/invocations/fmriprep_anat_wf.json
+```
+
+A quick description of the example config/invocation files available:
+- `config/boonstim.nf.config`: the config file describing folders used directly by BOONStim, ex. filepaths, optimization configs, resource paths
+- `resources/weightfunc/weightfunc.nf.config`: the config file describing the resources needed for running the weightfunction including regions of interest and cleaning parameters
+- `resources/invocations/fmriprep-20.2.0_invocation.json`: an example fmriprep invocation file that has mandatory parameters for preprocessing the fMRI data
+- `resources/invocations/fmriprep_anat_wf.json`: an example fmriprep invocation file that has mandatory parameters for preprocessing the anatomical data
+
+Detailed information on all parameters are available in the **Inputs** section below.
+
 ## Inputs
 
 Input Arguments:
