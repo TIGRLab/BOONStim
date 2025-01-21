@@ -17,6 +17,18 @@ BOONStim is run on the **Nextflow** framework. Nextflow is a framework that is d
 
 This allows BOONStim to be extensible and scalable, which is helpeful for running on HCP systems. This means to run BOONStim, you must have nextflow installed and configured to your system to access the nf entry scripts. You can find out about how to install Nextflow for your system [here](https://www.nextflow.io/). Note: To initiate DSL2 version of Nextflow set the following environment variable: NXF_VER=19.09.0-edge or anything newer.
 
+### Weightfunction/ROI Config
+
+BOONStim requires some setup to determine the region of interest for the optimization, as well as the weightfunction workflow itself. A default one is provided in this repo (under `resources/weightfunc/weightfunc.nf.config`). Here is a description of the relevant weightfunction files in `resources/weightfunc` that are currently used:
+
+ - `roi_mask.nii.gz`: Volume-space mask for the chosen region of interest
+ - `roi_inverse_mask.nii.gz`: Volume-space mask of network or brain without the chosen ROI(s)
+ - `compute_roi_connectivity.nf`: Workflow that contains modules to clean, smooth, and merge the surface data and generate correlations with the inverse ROI masks
+ - `make_roi_mask.nf`: Workflow that contains modules to take the volume-space ROI mask and project it to a surface-space symmetric binarized mask
+ - `calculate_weightfunc.nf`: Overview workflow that collects the preprocessed derivatives and outputs a projected mask and weightfunction used to generate an optimized target
+
+BOONStim will read from these files to determine the region to optimize over for targeting, and you can swap out the modules and ROIs currently available for your own purposes.
+
 ## Quickstart
 
 Once you have nextflow set up on your system, you're just about good to go for running BOONStim. Then you just need to edit the config files for your purposes (MRI acquisition parameters, preprocessing parameters, target regions) and run the following to get BOONStim started:
