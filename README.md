@@ -19,7 +19,7 @@ This allows BOONStim to be extensible and scalable, which is helpeful for runnin
 
 ### Weightfunction/ROI Config
 
-BOONStim requires some setup to determine the region of interest for the optimization, as well as the weightfunction workflow itself. A default one is provided in this repo (under `resources/weightfunc/weightfunc.nf.config`). Here is a description of the relevant weightfunction files in `resources/weightfunc` that are currently used:
+BOONStim requires some setup to determine the region of interest for the optimization, as well as the weightfunction workflow for weighted optimization. A default one is provided in this repo (under `resources/weightfunc/weightfunc.nf.config`). Here is a description of the relevant weightfunction files in `resources/weightfunc` that are currently used:
 
  - `roi_mask.nii.gz`: Volume-space mask for the chosen region of interest
  - `roi_inverse_mask.nii.gz`: Volume-space mask of network or brain without the chosen ROI(s)
