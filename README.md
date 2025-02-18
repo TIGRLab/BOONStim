@@ -4,6 +4,8 @@
 
 ![boonstim_overview](https://github.com/TIGRLab/BOONStim/assets/54225067/572aaa33-f090-4de6-af27-9b98dcdef137)
 
+For more information, read the associated article in *Brain Stimulation*: https://doi.org/10.1016/j.brs.2025.01.020
+
 ## Code Organization
 - **bin** contains run-time scripts that are called during the pipeline. 
 - **config** contains default configuration settings that BOONStim uses to source the proper containers and run-time settings (i.e cluster configuration)
