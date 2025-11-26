@@ -2,8 +2,6 @@
 
 ## About
 
-nextflow /scratch/smansour/BOONStim-updated/boonstim.nf -c /archive/data/EFLD/targeting/EFLD-pipeline/config/boonstim.nf.config   -c /archive/data/EFLD/targeting/sgacc-targeting/main.nf.config   --bids /archive/data/EFLD/data/bids/   --out /archive/data/EFLD/pipelines/targeting/output_fix/   --cache_dir /archive/data/EFLD/pipelines/targeting/cache_fix/   --subject_sheet /archive/data/EFLD/metadata/subs_sub-CMH0159.txt   --subject sub-CMH0159   -params-file /archive/data/EFLD/targeting/EFLD-pipeline/sgacc_kimel_params_updated2.json   -profile kimel -entry simple_workflow   -c /scratch/smansour/scripts/sgacc-dev/config/sgacc_processes.nf.config   -N salim.mansour@camh.ca
-
 ![boonstim_overview](https://github.com/TIGRLab/BOONStim/assets/54225067/572aaa33-f090-4de6-af27-9b98dcdef137)
 
 For more information, read the associated article in *Brain Stimulation*: https://doi.org/10.1016/j.brs.2025.01.020
