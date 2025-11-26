@@ -1,4 +1,4 @@
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
 // Set up grid optimization schema
 process grid_optimization{
@@ -91,7 +91,7 @@ workflow optimize_wf{
     main:
         i_grid_optimization = msh.join(weights)
                                 .join(centroid)
-                                .spread([coil])
+                                .combine([coil])
         grid_optimization(i_grid_optimization)
 
     emit:

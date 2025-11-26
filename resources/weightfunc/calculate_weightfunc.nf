@@ -1,4 +1,4 @@
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 include calculate_weightfunc_wf from './compute_roi_connectivity.nf' params(params)
 include mask_wf from './make_roi_mask.nf' params(params)

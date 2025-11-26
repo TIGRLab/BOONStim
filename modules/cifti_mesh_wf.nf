@@ -1,4 +1,4 @@
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 // To allow for optional inputs
 params.null_file = "NULL"
@@ -186,15 +186,17 @@ process fmriprep_anat{
     shell:
     '''
     mkdir work
+    export SINGULARITYENV_TEMPLATEFLOW_HOME=/home/templates
     bosh exec launch \
     -v !{params.bids}:/bids \
     -v $(pwd):/output \
     -v $(pwd)/work:/work \
     -v !{params.license}:/license \
     -v !{params.resources}:/resources \
+    -v !{params.templates}:/home/templates \
     !{params.fmriprep_descriptor} $(pwd)/!{json} \
     --imagepath !{params.fmriprep} -x --stream
-t
+
     # Find anat file and link to current folder
     find fmriprep/!{sub}/ -type f -name "*preproc_T*w.nii.gz" | \
     grep -v MNI152 | xargs -I [] cp [] .
@@ -229,12 +231,14 @@ process run_fmriprep{
     shell:
     '''
     mkdir work
+    export SINGULARITYENV_TEMPLATEFLOW_HOME=/home/templates
     bosh exec launch \
     -v !{params.bids}:/bids \
     -v $(pwd):/output \
     -v $(pwd)/work:/work \
     -v !{params.license}:/license \
     -v !{params.resources}:/resources \
+    -v !{params.templates}:/home/templates \
     !{params.fmriprep_descriptor} $(pwd)/!{json} \
     --imagepath !{params.fmriprep} -x --stream
 
@@ -256,7 +260,7 @@ process mri2mesh {
         fmriprep (channel): (subject, fmriprep: Path) Subject fMRIPrep directory
         html (channel): (subject, fmriprep_html: Path) Subject fMRIPrep HTML file
     */
-    
+
     input:
     tuple val(sub), path(t1), path(optional_t2)
 
@@ -292,6 +296,7 @@ process update_msh{
     Outputs:
         mesh (channel): (sub, mesh: Path) Path to v2 .msh file
     */
+
 
     label 'gmsh4'
 
@@ -488,23 +493,21 @@ workflow cifti_meshing_wf {
         update_msh(update_msh_input)
 
         // Publish outputs
-        if (!params.skip_preproc_publish.toBoolean()){
-            publish_cifti(
-                ciftify.out.ciftify
-                    .join(ciftify.out.qc_fmri)
-                    .join(ciftify.out.qc_recon)
-                    .join(fmriprep_wf.out.fmriprep)
-                    .join(fmriprep_wf.out.html)
-                    .join(fmriprep_wf.out.freesurfer)
-                    .combine(["$params.zz"])
-            )
+        publish_cifti(
+            ciftify.out.ciftify
+                .join(ciftify.out.qc_fmri)
+                .join(ciftify.out.qc_recon)
+                .join(fmriprep_wf.out.fmriprep)
+                .join(fmriprep_wf.out.html)
+                .join(fmriprep_wf.out.freesurfer)
+                .combine(["$params.zz"])
+        )
 
-            publish_mri2mesh(
-                mri2mesh.out.T1
-                    .join(mri2mesh.out.mri2mesh)
-                    .join(mri2mesh.out.freesurfer)
-            )
-        }
+        publish_mri2mesh(
+            mri2mesh.out.T1
+                .join(mri2mesh.out.mri2mesh)
+                .join(mri2mesh.out.freesurfer)
+        )
 
     emit:
         cifti = ciftify.out.ciftify

@@ -1,4 +1,4 @@
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 process calculate_e100 {
 
@@ -131,8 +131,8 @@ workflow dosage_adjustment_wf {
         calculate_e100(sim_msh.join(m2m_dir))
         scale_didt (
             calculate_e100.out.e100
-                .spread([reference])
-                .spread([params.didt])
+                .combine([reference])
+                .combine([params.didt])
         )
 
         publish_dosage_adjustment (

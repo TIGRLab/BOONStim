@@ -1,4 +1,4 @@
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 // Parameter that will allow the coil angle to point posteriorly
 params.coil_handle_can_point_anterior = false

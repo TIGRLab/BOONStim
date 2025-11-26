@@ -1,4 +1,4 @@
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
 process bayesian_optimization{
 
@@ -88,7 +88,7 @@ workflow optimize_wf{
         i_bayesian_optimization = msh
                                     .join(weights)
                                     .join(centroid)
-                                    .spread([coil])
+                                    .combine([coil])
         bayesian_optimization(i_bayesian_optimization)
 
     emit:

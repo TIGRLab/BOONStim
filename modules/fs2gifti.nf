@@ -1,4 +1,4 @@
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 
 process convert_fs2gifti{
@@ -137,8 +137,8 @@ workflow make_giftis {
     main:
         // Construct pathing
         sub_surfaces = fs_dirs
-                            .spread(['L','R'])
-                            .spread(['pial','white'])
+                            .combine(['L','R'])
+                            .combine(['pial','white'])
                             .map{ n,fs,h,surf ->   [
                                                         n,h,surf,
                                                         "${fs}/surf/${h.toLowerCase()}h.${surf}"

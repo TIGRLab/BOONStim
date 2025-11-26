@@ -1,4 +1,4 @@
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 
 process convert_sulcal{
@@ -389,7 +389,7 @@ workflow registration_wf {
         // Might have to migrate this over fs2gifti
         // Convert sulcal information from freesurfer to connectome workbench
         sulcal_input = fs_dirs
-                            .spread ( ['L','R'] )
+                            .combine ( ['L','R'] )
                             .map{s,f,h ->   [
                                                 s,
                                                 h,
@@ -413,8 +413,8 @@ workflow registration_wf {
 
         // Now convert spheres over, assign properties,
         registration_spheres = fs_dirs
-                                    .spread( ['L','R'] )
-                                    .spread( ['sphere','sphere.reg'] )
+                                    .combine( ['L','R'] )
+                                    .combine( ['sphere','sphere.reg'] )
                                     .map{ s,f,h,sph ->  [
                                                             s,h,
                                                             "${f}/surf/${h.toLowerCase()}h.${sph}",

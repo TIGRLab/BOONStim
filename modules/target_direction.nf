@@ -1,4 +1,4 @@
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
 include { numpy2txt } from "../modules/utils.nf" params(params)
 

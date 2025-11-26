@@ -1,4 +1,4 @@
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 params.radius = 20 // in mm
 
 include { weightfunc_wf } from "${params.weightworkflow}" params(params)

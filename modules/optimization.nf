@@ -1,4 +1,4 @@
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
 
 include {optimize_wf as optimize} from "${params.optimization_module}" params(params)

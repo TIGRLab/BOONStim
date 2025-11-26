@@ -1,4 +1,4 @@
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 include { getArgumentParser } from "./lib/args"
 
@@ -152,6 +152,13 @@ log.info("Using user-defined ROI workflow: $params.weightworkflow")
 
 input_channel = Channel.fromPath("$params.bids/sub-*", type: 'dir')
                     .map{i -> i.getBaseName()}
+
+if (params.subjects){
+    subjects_file_channel = Channel.fromPath(params.subjects)
+                            .splitText(){it.strip()}
+    input_channel = subjects_file_channel
+    subjects_file_channel | view
+}
 
 if (params.subject_sheet){
     subjects_channel = Channel.fromPath(params.subject_sheet)
